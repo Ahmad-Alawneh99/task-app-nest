@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import Task from '../models/task';
-import TaskDTO from 'src/dto/Task';
-import { TaskStatus } from 'src/shared/types';
+import TaskDTO from '../dto/Task';
+import { TaskStatus } from '../shared/TaskStatus';
 
 @Injectable()
 export class TaskService {

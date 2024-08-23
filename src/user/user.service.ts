@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, HttpStatus, Injectable } from '@nestjs/common';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import UserDTO from 'src/dto/User';
 import User from '../models/user';
 
@@ -35,10 +35,10 @@ export class UserService {
 	async getProfile(userId: string) {
 		const user = await User.findOne({ _id: userId });
 		if (!user) {
-			new BadRequestException({ success: false, code: HttpStatus.BAD_REQUEST, message: 'Profile info not found' });
+			throw new BadRequestException({ success: false, code: HttpStatus.BAD_REQUEST, message: 'Profile info not found' });
 		}
 
-		delete user.password; // do not return password with the response
+		user.password = ''; // do not return password with the response
 
 		return user;
 	}

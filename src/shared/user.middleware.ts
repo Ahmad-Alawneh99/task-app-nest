@@ -8,11 +8,11 @@ import { ExtensibleRequest } from './types';
 export class UserMiddleware implements NestMiddleware {
   use(req: ExtensibleRequest, res: Response, next: NextFunction) {
 	try {
-		// const cookies = req.headers.cookie || '';
-		// const taskAppToken = cookies.split(';').find((cookie) => cookie.trim().startsWith('task_app_token'))?.split('=')[1] || '';
-		// const validatedToken = tokenUtils.verifyToken(taskAppToken) as JwtPayload;
+		const cookies = req.headers.cookie || '';
+		const taskAppToken = cookies.split(';').find((cookie) => cookie.trim().startsWith('task_app_token'))?.split('=')[1] || '';
+		const validatedToken = tokenUtils.verifyToken(taskAppToken) as JwtPayload;
 
-		req.userId =  'random'; ///validatedToken.id as string;
+		req.userId = validatedToken.id as string;
 
 		return next();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

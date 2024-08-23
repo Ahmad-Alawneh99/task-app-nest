@@ -38,7 +38,7 @@ export class UserController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when signing up: ${error.message || 'Unknown error'}`
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -49,7 +49,7 @@ export class UserController {
 	@HttpCode(200)
 	async signIn(@Body() userData: UserDTO) {
 		try {
-			if (!userData.email.trim() || !!userData.password.trim()) {
+			if (!userData.email.trim() || !userData.password.trim()) {
 				throw new BadRequestException({ success: false, code: HttpStatus.BAD_REQUEST, message: 'Email and password are required.' });
 			}
 
@@ -70,7 +70,7 @@ export class UserController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when signing in: ${error.message || 'Unknown error'}`
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
