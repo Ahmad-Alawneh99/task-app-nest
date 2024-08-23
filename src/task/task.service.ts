@@ -1,6 +1,7 @@
 import { BadRequestException, ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import Task from '../models/task';
-import { TaskDTO } from 'src/dto/Task';
+import TaskDTO from 'src/dto/Task';
+import { TaskStatus } from 'src/shared/types';
 
 @Injectable()
 export class TaskService {
@@ -39,7 +40,7 @@ export class TaskService {
 
 		await task.save();
 
-		return task._id;
+		return task.id;
 	}
 
 	async updateTask(taskData: TaskDTO, taskId: string, userId: string) {
@@ -58,8 +59,8 @@ export class TaskService {
 		}
 
 		const updatedTask: Partial<TaskDTO> = {
-			...taskData.title ? { title: taskData.title } : {},
-			...taskData.description ? { description: taskData.description } : {},
+			...taskData.title.trim() ? { title: taskData.title } : {},
+			...taskData.description.trim() ? { description: taskData.description } : {},
 			...taskData.status ? { status: taskData.status } : {},
 			...taskData.dueDate ? { dueDate: taskData.dueDate } : {},
 		};
@@ -89,5 +90,16 @@ export class TaskService {
 		}
 
 		await Task.findByIdAndDelete(taskId);
+	}
+
+	async getTasksSummary(userId: string) {
+		const tasks = await Task.find({ owner: userId });
+
+		return {
+			totalTasks: tasks.length,
+			pendingTasks: tasks.filter((task) => task.status === TaskStatus.PENDING).length,
+			inProgressTasks: tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS).length,
+			completedTasks: tasks.filter((task) => task.status === TaskStatus.COMPLETED).length,
+		}
 	}
 }

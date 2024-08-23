@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { UserID } from 'src/shared/userId.decorator';
-import { TaskDTO } from 'src/dto/Task';
+import TaskDTO from 'src/dto/Task';
 
 @Controller('tasks')
 export class TaskController {
@@ -41,14 +41,34 @@ export class TaskController {
 	}
 
 	@Get('/summary')
-	async getTasksSummary() {
+	async getTasksSummary(@UserID() userId: string) {
+		try {
+			const tasksSummary = await this.taskService.getTasksSummary(userId);
 
+			return {
+				success: true,
+				code: HttpStatus.OK,
+				tasksSummary,
+			};
+		} catch(error) {
+			if (error instanceof HttpException) {
+				throw error;
+			}
+			throw new HttpException(
+				{
+					success: false,
+					code: HttpStatus.INTERNAL_SERVER_ERROR,
+					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`
+				},
+				HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
 	}
 
 	@Post()
 	async createTask(@Body() task: TaskDTO, @UserID() userId: string) {
 		try {
-			if (!task.title || !task.dueDate) {
+			if (!task.title.trim() || !task.dueDate) {
 				throw new BadRequestException({
 					success: false,
 					code: HttpStatus.BAD_REQUEST,
@@ -60,7 +80,7 @@ export class TaskController {
 
 			return {
 				success: true,
-				code: HttpStatus.OK,
+				code: HttpStatus.CREATED,
 				taskId: createdTaskId,
 			};
 		} catch (error) {
@@ -106,7 +126,7 @@ export class TaskController {
 	@Put(':id')
 	async updateTask(@Body() taskData: TaskDTO, @UserID() userId: string, @Param(':id') taskId: string) {
 		try {
-			await this.updateTask(taskData, userId, taskId);
+			await this.taskService.updateTask(taskData, userId, taskId);
 
 			return { success: true, code: HttpStatus.OK, message: 'Task updated successfully' };
 		} catch (error) {

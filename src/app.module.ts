@@ -10,8 +10,8 @@ import { TaskController } from './task/task.controller';
   controllers: [AppController, TaskController],
   providers: [AppService, TaskService],
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UserMiddleware).forRoutes('tasks');
+    consumer.apply(UserMiddleware).forRoutes('tasks', 'users/profile');
   }
 }
