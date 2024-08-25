@@ -124,8 +124,15 @@ export class TaskController {
 	}
 
 	@Put(':id')
-	async updateTask(@Body() taskData: TaskDTO, @UserID() userId: string, @Param(':id') taskId: string) {
+	async updateTask(@Body() taskData: TaskDTO, @UserID() userId: string, @Param('id') taskId: string) {
 		try {
+			if (!taskData || !Object.keys(taskData).length) {
+				throw new BadRequestException({
+					success: false,
+					code: HttpStatus.BAD_REQUEST,
+					message: 'No values to update',
+				});
+			}
 			await this.taskService.updateTask(taskData, userId, taskId);
 
 			return { success: true, code: HttpStatus.OK, message: 'Task updated successfully' };

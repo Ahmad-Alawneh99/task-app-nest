@@ -6,5 +6,5 @@ export default class TaskDTO {
 	title: string;
 	description?: string;
 	status: TaskStatus;
-	dueDate: any; // @TODO
+	dueDate: Date;
 }

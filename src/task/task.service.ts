@@ -12,7 +12,7 @@ export class TaskService {
 	}
 
 	async findTask(taskId: string, userId: string) {
-		const task = await Task.findById({ _id: taskId }); // @TODO: consider refactoring this since it's used in multiple places
+		const task = await Task.findById(taskId); // @TODO: consider refactoring this since it's used in multiple places
 
 		if (!task) {
 			throw new BadRequestException(
@@ -43,8 +43,8 @@ export class TaskService {
 		return task.id;
 	}
 
-	async updateTask(taskData: TaskDTO, taskId: string, userId: string) {
-		const existingTask = await Task.findById({ _id: taskId });
+	async updateTask(taskData: TaskDTO, userId: string, taskId: string) {
+		const existingTask = await Task.findById(taskId);
 
 		if (!existingTask) {
 			throw new BadRequestException(
@@ -59,8 +59,8 @@ export class TaskService {
 		}
 
 		const updatedTask: Partial<TaskDTO> = {
-			...taskData.title.trim() ? { title: taskData.title } : {},
-			...taskData.description.trim() ? { description: taskData.description } : {},
+			...taskData.title?.trim() ? { title: taskData.title } : {},
+			...taskData.description?.trim() ? { description: taskData.description } : {},
 			...taskData.status ? { status: taskData.status } : {},
 			...taskData.dueDate ? { dueDate: taskData.dueDate } : {},
 		};
@@ -75,7 +75,7 @@ export class TaskService {
 	}
 
 	async deleteTask(userId: string, taskId: string) {
-		const existingTask = await Task.findById({ _id: taskId });
+		const existingTask = await Task.findById(taskId);
 
 		if (!existingTask) {
 			throw new BadRequestException(
