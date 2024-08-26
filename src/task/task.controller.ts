@@ -8,7 +8,7 @@ import {
 	HttpStatus,
 	Param,
 	Post,
-	Put
+	Put,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { UserID } from 'src/shared/userId.decorator';
@@ -19,7 +19,7 @@ export class TaskController {
 	constructor(private readonly taskService: TaskService) {}
 
 	@Get()
-		async findAllTasks(@UserID() userId: string) {
+	async findAllTasks(@UserID() userId: string) {
 		try {
 			const tasks = await this.taskService.findAllTasks(userId);
 
@@ -33,7 +33,7 @@ export class TaskController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when getting tasks: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when getting tasks: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -50,7 +50,7 @@ export class TaskController {
 				code: HttpStatus.OK,
 				tasksSummary,
 			};
-		} catch(error) {
+		} catch (error) {
 			if (error instanceof HttpException) {
 				throw error;
 			}
@@ -58,7 +58,7 @@ export class TaskController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -91,7 +91,7 @@ export class TaskController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -116,7 +116,7 @@ export class TaskController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when getting the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when getting the task: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -144,7 +144,7 @@ export class TaskController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when updating the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when updating the task: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -166,7 +166,7 @@ export class TaskController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when deleting the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when deleting the task: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);

@@ -12,7 +12,7 @@ export class TaskService {
 	}
 
 	async findTask(taskId: string, userId: string) {
-		const task = await Task.findById(taskId); // @TODO: consider refactoring this since it's used in multiple places
+		const task = await Task.findById(taskId);
 
 		if (!task) {
 			throw new BadRequestException(
@@ -93,13 +93,23 @@ export class TaskService {
 	}
 
 	async getTasksSummary(userId: string) {
-		const tasks = await Task.find({ owner: userId });
+		const tasks = await Task.find({ owner: userId }).sort([['dueDate', 1]]);
+
+		const dueDates = tasks.map((task) => task.dueDate.toISOString().split('T')[0]);
+		const uniqueDueDates = new Set(dueDates);
+
+		const dueDatesMap = { ...uniqueDueDates };
+
+		dueDates.forEach((date) => {
+			dueDatesMap[date] = dueDatesMap[date] ? dueDatesMap[date] + 1 : 1;
+		});
 
 		return {
 			totalTasks: tasks.length,
 			pendingTasks: tasks.filter((task) => task.status === TaskStatus.PENDING).length,
 			inProgressTasks: tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS).length,
 			completedTasks: tasks.filter((task) => task.status === TaskStatus.COMPLETED).length,
-		}
+			tasksPerDueDate: dueDatesMap,
+		};
 	}
 }

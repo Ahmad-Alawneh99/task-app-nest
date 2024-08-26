@@ -28,7 +28,7 @@ export class UserController {
 				success: true,
 				code: HttpStatus.CREATED,
 				message: 'User created successfully',
-				token
+				token,
 			};
 		} catch (error) {
 			if (error instanceof HttpException) {
@@ -38,7 +38,7 @@ export class UserController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when signing up: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when signing up: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -70,7 +70,7 @@ export class UserController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when signing in: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when signing in: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -85,7 +85,7 @@ export class UserController {
 			return {
 				success: true,
 				code: HttpStatus.OK,
-				user
+				user,
 			};
 		} catch (error) {
 			if (error instanceof HttpException) {
@@ -95,7 +95,7 @@ export class UserController {
 				{
 					success: false,
 					code: HttpStatus.INTERNAL_SERVER_ERROR,
-					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`
+					message: `Something went wrong when creating the task: ${error.message || 'Unknown error'}`,
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);

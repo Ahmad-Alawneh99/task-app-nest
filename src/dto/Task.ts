@@ -1,4 +1,4 @@
-import { TaskStatus } from "../shared/TaskStatus";
+import { TaskStatus } from '../shared/TaskStatus';
 
 export default class TaskDTO {
 	id?: string; // present only when retrieving from the database

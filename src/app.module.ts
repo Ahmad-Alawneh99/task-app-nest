@@ -7,12 +7,12 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController, TaskController, UserController],
-  providers: [TaskService, UserService],
+	imports: [],
+	controllers: [AppController, TaskController, UserController],
+	providers: [TaskService, UserService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UserMiddleware).forRoutes('tasks', 'users/profile');
-  }
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(UserMiddleware).forRoutes('tasks', 'users/profile');
+	}
 }

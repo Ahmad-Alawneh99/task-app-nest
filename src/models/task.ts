@@ -14,18 +14,18 @@ const taskSchema = new mongoose.Schema({
 	},
 	status:{
 		type: String,
-        enum: ['PENDING', 'IN PROGRESS', 'COMPLETED'],
-        default: 'PENDING',
+		enum: ['PENDING', 'IN PROGRESS', 'COMPLETED'],
+		default: 'PENDING',
 		required: true,
 	},
-    dueDate: {
-        type: Date,
-        required: true,
-    },
-    owner: {
-        type: String,
-        ref: 'User',
-    }
+	dueDate: {
+		type: Date,
+		required: true,
+	},
+	owner: {
+		type: String,
+		ref: 'User',
+	},
 });
 
 const Task = mongoose.model('Task', taskSchema);
