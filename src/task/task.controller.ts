@@ -68,7 +68,7 @@ export class TaskController {
 	@Post()
 	async createTask(@Body() task: TaskDTO, @UserID() userId: string) {
 		try {
-			if (!task.title.trim() || !task.dueDate) {
+			if (!task.title.trim() || !task.dueDate || !task.status) {
 				throw new BadRequestException({
 					success: false,
 					code: HttpStatus.BAD_REQUEST,

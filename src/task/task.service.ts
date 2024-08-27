@@ -94,6 +94,11 @@ export class TaskService {
 
 	async getTasksSummary(userId: string) {
 		const tasks = await Task.find({ owner: userId }).sort([['dueDate', 1]]);
+		const nearestDueTasks = await Task.aggregate([
+			{ $match: { $and: [{ owner: userId }, { status: { $ne: TaskStatus.COMPLETED } }] } },
+			{ $sort: { dueDate: 1 } },
+			{ $limit: 3 },
+		]);
 
 		const dueDates = tasks.map((task) => task.dueDate.toISOString().split('T')[0]);
 		const uniqueDueDates = new Set(dueDates);
@@ -110,6 +115,7 @@ export class TaskService {
 			inProgressTasks: tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS).length,
 			completedTasks: tasks.filter((task) => task.status === TaskStatus.COMPLETED).length,
 			tasksPerDueDate: dueDatesMap,
+			nearestDueTasks: nearestDueTasks,
 		};
 	}
 }
