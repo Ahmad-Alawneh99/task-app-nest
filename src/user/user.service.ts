@@ -10,6 +10,8 @@ export class UserService {
 			const hashedPassword = await bcrypt.hash(userData.password, 16);
 			const user = new User({ email: userData.email, password: hashedPassword, name: userData.name });
 			await user.save();
+
+			return user._id;
 		} catch (error) {
 			if (error.code === 11000) {
 				throw new ConflictException({ success: false, code: HttpStatus.CONFLICT, message: 'Email already exists.' });

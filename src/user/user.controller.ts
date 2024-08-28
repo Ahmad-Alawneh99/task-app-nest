@@ -22,7 +22,7 @@ export class UserController {
 
 			const userId = await this.userService.createUser(userData);
 
-			const token = tokenUtils.signToken({ email: userData.email, id: userId });
+			const token = tokenUtils.signToken({ id: userId, email: userData.email });
 
 			return {
 				success: true,
