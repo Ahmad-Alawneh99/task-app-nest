@@ -1,25 +1,23 @@
 version: '3.8'
 
 services:
-  frontend:
-    image: task_app_frontend:latest
-    ports:
-      - "3000:3000"
-    environment:
-      BACKEND_API: http://localhost:3030
-    depends_on:
-      - backend
-
   mongo:
     image: mongodb/mongodb-community-server:latest
     ports:
       - "27017:27017"
-
   backend:
     image: task_app_backend:latest
     ports:
       - "3030:3030"
     environment:
-      DB: mongodb://mongo:27017/tasks
+      DB_URL: mongodb://mongo:27017/tasks
     depends_on:
       - mongo
+  frontend:
+    image: task_app_frontend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      BACKEND_API: http://backend:3030
+    depends_on:
+      - backend
